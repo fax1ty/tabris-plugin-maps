@@ -6,11 +6,12 @@ import android.graphics.Point
 import androidx.core.content.ContextCompat
 import com.eclipsesource.tabris.android.ActivityScope
 import com.eclipsesource.tabris.android.Property
-import com.eclipsesource.tabris.android.V8ObjectProperty
 import com.eclipsesource.tabris.android.internal.ktx.getFloat
 import com.eclipsesource.tabris.android.internal.ktx.toList
 import com.eclipsesource.tabris.android.internal.ktx.toPixel
 import com.eclipsesource.tabris.android.internal.nativeobject.view.ViewHandler
+import com.eclipsesource.v8.V8
+import com.eclipsesource.v8.V8Array
 import com.eclipsesource.v8.V8Object
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
@@ -72,6 +73,8 @@ open class MapHandler(private val scope: ActivityScope) : ViewHandler<MapHolderV
     }
 
     // @fax1ty
+    val runtime = V8.createV8Runtime()
+    
     private fun setMapStyle(mapHolderView: MapHolderView, properties: V8Object) {
         mapHolderView.googleMap.setMapStyle(MapStyleOptions(properties.getString("style")))
     }
@@ -80,17 +83,17 @@ open class MapHandler(private val scope: ActivityScope) : ViewHandler<MapHolderV
         mapHolderView.googleMap.uiSettings.setAllGesturesEnabled(properties.getBoolean("enabled"))
     }
 
-    private fun positionToScreenPoint(mapHolderView: MapHolderView, properties: V8Object): Array<Int> {
+    private fun positionToScreenPoint(mapHolderView: MapHolderView, properties: V8Object): V8Array {
         val position = properties.getArray("position").toList<Double>()
         val point = mapHolderView.googleMap.projection.toScreenLocation(LatLng(position[0], position[1]))
-        return arrayOf(point.x, point.y)
+        return V8Array(runtime).push(point.x).push(point.y)
     }
 
-    private fun screenPointToPosition(mapHolderView: MapHolderView, properties: V8Object): Array<Double> {
+    private fun screenPointToPosition(mapHolderView: MapHolderView, properties: V8Object): V8Array {
         val propPoint = properties.getArray("point").toList<Int>()
         val point = Point(propPoint[0], propPoint[1])
         val position = mapHolderView.googleMap.projection.fromScreenLocation(point)
-        return arrayOf(position.latitude, position.latitude)
+        return V8Array(runtime).push(position.latitude).push(position.longitude)
     }
     // @fax1ty
 
