@@ -14,6 +14,7 @@ import com.eclipsesource.v8.V8Object
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlin.math.roundToInt
 
@@ -64,7 +65,7 @@ open class MapHandler(private val scope: ActivityScope) : ViewHandler<MapHolderV
   }
 
   private fun setMapStyle(mapHolderView: MapHolderView, properties: V8Object) {
-    mapHolderView.googleMap.setMapStyle(properties.getString("style"))
+    mapHolderView.googleMap.setMapStyle(MapStyleOptions(properties.getString("style")))
   }
 
   private fun getMarkerScreenPosition(mapHolderView: MapHolderView, marker: MapMarker) : Point {
