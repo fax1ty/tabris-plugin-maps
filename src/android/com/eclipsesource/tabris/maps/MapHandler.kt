@@ -87,8 +87,9 @@ open class MapHandler(private val scope: ActivityScope) : ViewHandler<MapHolderV
     }
 
     private fun screenPointToPosition(mapHolderView: MapHolderView, properties: V8Object): Array<Double> {
-        val point = Point(properties.getArray("point").toList<Int>())
-        val position = mapHolderView.googleMap.projection.fromScreenLocation(point))
+        val propPoint = properties.getArray("point").toList<Int>()
+        val point = Point(propPoint[0], propPoint[1])
+        val position = mapHolderView.googleMap.projection.fromScreenLocation(point)
         return arrayOf(position.latitude, position.latitude)
     }
     // @fax1ty
