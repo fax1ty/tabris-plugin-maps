@@ -79,15 +79,31 @@ Object.assign(Map.prototype, {
     this._dispose();
   },
 
+  // @fax1ty
   setMapStyle: function (style) {
     this._nativeCall('setMapStyle', {
       style: style
     });
   },
 
-  getMarkerScreenPosition: function (marker) {
-    return this._nativeGetMarkerScreenPosition(marker);
+  setAllGesturesEnabled: function (enabled) {
+    this._nativeCall('setAllGesturesEnabled', {
+      enabled: enabled
+    });
+  },
+
+  positionToScreenPoint: function (position) {
+    return this._nativeCall('positionToScreenPoint', {
+      position: position
+    });
+  },
+
+  screenPointToPosition: function (position) {
+    return this._nativeCall('screenPointToPosition', {
+      position: position
+    });
   }
+  // @fax1ty
 
 });
 
