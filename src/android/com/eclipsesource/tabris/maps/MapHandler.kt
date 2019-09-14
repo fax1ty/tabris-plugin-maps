@@ -73,8 +73,8 @@ open class MapHandler(private val scope: ActivityScope) : ViewHandler<MapHolderV
     }
 
     // @fax1ty
-    val runtime = V8.createV8Runtime()
-    
+    val runtime = V8.createV8Runtime()!!
+
     private fun setMapStyle(mapHolderView: MapHolderView, properties: V8Object) {
         mapHolderView.googleMap.setMapStyle(MapStyleOptions(properties.getString("style")))
     }
@@ -83,10 +83,11 @@ open class MapHandler(private val scope: ActivityScope) : ViewHandler<MapHolderV
         mapHolderView.googleMap.uiSettings.setAllGesturesEnabled(properties.getBoolean("enabled"))
     }
 
-    private fun positionToScreenPoint(mapHolderView: MapHolderView, properties: V8Object): V8Array {
+    private fun positionToScreenPoint(mapHolderView: MapHolderView, properties: V8Object): ArrayList<Int> {
         val position = properties.getArray("position").toList<Double>()
         val point = mapHolderView.googleMap.projection.toScreenLocation(LatLng(position[0], position[1]))
-        return V8Array(runtime).push(point.x).push(point.y)
+//        return V8Array(runtime).push(point.x).push(point.y)
+        return arrayListOf(point.x, point.y)
     }
 
     private fun screenPointToPosition(mapHolderView: MapHolderView, properties: V8Object): V8Array {
@@ -185,5 +186,4 @@ open class MapHandler(private val scope: ActivityScope) : ViewHandler<MapHolderV
     private fun removeOnMapLongClickListener(mapHolderView: MapHolderView) {
         mapHolderView.googleMap.setOnMapLongClickListener(null)
     }
-
 }
