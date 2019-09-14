@@ -10,8 +10,6 @@ import com.eclipsesource.tabris.android.internal.ktx.getFloat
 import com.eclipsesource.tabris.android.internal.ktx.toList
 import com.eclipsesource.tabris.android.internal.ktx.toPixel
 import com.eclipsesource.tabris.android.internal.nativeobject.view.ViewHandler
-import com.eclipsesource.v8.V8
-import com.eclipsesource.v8.V8Array
 import com.eclipsesource.v8.V8Object
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
@@ -73,8 +71,6 @@ open class MapHandler(private val scope: ActivityScope) : ViewHandler<MapHolderV
     }
 
     // @fax1ty
-    val runtime = V8.createV8Runtime()!!
-
     private fun setMapStyle(mapHolderView: MapHolderView, properties: V8Object) {
         mapHolderView.googleMap.setMapStyle(MapStyleOptions(properties.getString("style")))
     }
@@ -86,15 +82,14 @@ open class MapHandler(private val scope: ActivityScope) : ViewHandler<MapHolderV
     private fun positionToScreenPoint(mapHolderView: MapHolderView, properties: V8Object): ArrayList<Int> {
         val position = properties.getArray("position").toList<Double>()
         val point = mapHolderView.googleMap.projection.toScreenLocation(LatLng(position[0], position[1]))
-//        return V8Array(runtime).push(point.x).push(point.y)
         return arrayListOf(point.x, point.y)
     }
 
-    private fun screenPointToPosition(mapHolderView: MapHolderView, properties: V8Object): V8Array {
+    private fun screenPointToPosition(mapHolderView: MapHolderView, properties: V8Object): ArrayList<Double>  {
         val propPoint = properties.getArray("point").toList<Int>()
         val point = Point(propPoint[0], propPoint[1])
         val position = mapHolderView.googleMap.projection.fromScreenLocation(point)
-        return V8Array(runtime).push(position.latitude).push(position.longitude)
+        return arrayListOf(position.latitude, position.longitude)
     }
     // @fax1ty
 
@@ -186,4 +181,5 @@ open class MapHandler(private val scope: ActivityScope) : ViewHandler<MapHolderV
     private fun removeOnMapLongClickListener(mapHolderView: MapHolderView) {
         mapHolderView.googleMap.setOnMapLongClickListener(null)
     }
+
 }
