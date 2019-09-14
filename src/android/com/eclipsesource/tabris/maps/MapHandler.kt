@@ -2,6 +2,7 @@ package com.eclipsesource.tabris.maps
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Point
 import androidx.core.content.ContextCompat
 import com.eclipsesource.tabris.android.ActivityScope
 import com.eclipsesource.tabris.android.Property
@@ -58,7 +59,16 @@ open class MapHandler(private val scope: ActivityScope) : ViewHandler<MapHolderV
     "moveToRegion" -> moveCameraToRegion(mapHolderView, properties)
     "addMarker" -> addMarker(mapHolderView, properties)
     "removeMarker" -> removeMarker(properties)
+    "setMapStyle" -> setMapStyle(mapHolderView, properties)
     else -> null
+  }
+
+  private fun setMapStyle(mapHolderView: MapHolderView, properties: V8Object) {
+    mapHolderView.googleMap.setMapStyle(properties.getString("style"))
+  }
+
+  private fun getMarkerScreenPosition(mapHolderView: MapHolderView, marker: MapMarker) : Point {
+    return mapHolderView.googleMap.projection.toScreenLocation(marker.position)
   }
 
   private fun moveCameraToRegion(mapHolderView: MapHolderView, properties: V8Object) {
