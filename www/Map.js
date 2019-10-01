@@ -70,7 +70,7 @@ Object.assign(Map.prototype, {
   dispose: function() {
     this._markers = [];
     this._dispose();
-  }
+  },
   
    // @fax1ty
   setMapStyle: function (style) {
