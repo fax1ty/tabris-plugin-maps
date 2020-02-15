@@ -9,7 +9,6 @@ import com.eclipsesource.tabris.android.internal.ktx.toList
 import com.eclipsesource.v8.V8Object
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
-import java.lang.Exception
 
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
