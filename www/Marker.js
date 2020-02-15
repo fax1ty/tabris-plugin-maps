@@ -3,7 +3,11 @@ var Marker = tabris.NativeObject.extend('com.eclipsesource.maps.Marker', tabris.
 Marker.prototype._listen = function (name, listening) {
   if (name === 'tap') {
     this._nativeListen(name, listening);
-  } else {
+  }
+  else if (name === 'move') {
+    this._nativeListen(name, listening);
+  }
+  else {
     tabris.Widget.prototype._listen.call(this, name, listening);
   }
 };

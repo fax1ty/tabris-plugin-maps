@@ -5,6 +5,7 @@ import android.animation.TypeEvaluator
 import com.eclipsesource.tabris.android.ActivityScope
 import com.eclipsesource.tabris.android.ObjectHandler
 import com.eclipsesource.tabris.android.Property
+import com.eclipsesource.tabris.android.Scope
 import com.eclipsesource.tabris.android.internal.ktx.toList
 import com.eclipsesource.v8.V8Object
 import com.google.android.gms.maps.model.LatLng
@@ -12,7 +13,7 @@ import com.google.android.gms.maps.model.Marker
 
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
-class MarkerHandler(scope: ActivityScope) : ObjectHandler<MapMarker> {
+class MarkerHandler(private val scope: ActivityScope) : ObjectHandler<MapMarker> {
 
     override val type = "com.eclipsesource.maps.Marker"
 
@@ -22,6 +23,16 @@ class MarkerHandler(scope: ActivityScope) : ObjectHandler<MapMarker> {
             MarkerSnippetProperty,
             MarkerTitleProperty
     )
+
+    override fun listen(id: String, mapMarker: MapMarker, event: String, listen: Boolean) {
+        super.listen(id, mapMarker, event, listen)
+        when (event) {
+            "move" -> {
+                if (listen) mapMarker.animator?.addUpdateListener { scope.remoteObject(mapMarker)?.notify("move", "position", mapMarker.marker?.position) }
+                else mapMarker.animator?.removeAllUpdateListeners()
+            }
+        }
+    }
 
     override fun call(mapMarker: MapMarker, method: String, properties: V8Object) = when (method) {
         "moveTo" -> moveTo(mapMarker, properties)
@@ -35,7 +46,7 @@ class MarkerHandler(scope: ActivityScope) : ObjectHandler<MapMarker> {
         val duration = properties.getInteger("duration")
         if (!animate) mapMarker.position = LatLng(toPos[0], toPos[1])
         else {
-            MarkerAnimation.animateMarkerTo(mapMarker.marker, LatLng(toPos[0], toPos[1]), duration, LatLngInterpolator.Spherical())
+            MarkerAnimation.animateMarkerTo(mapMarker, LatLng(toPos[0], toPos[1]), duration, LatLngInterpolator.Spherical())
         }
     }
 
@@ -48,10 +59,11 @@ class MarkerHandler(scope: ActivityScope) : ObjectHandler<MapMarker> {
 }
 
 object MarkerAnimation {
-    fun animateMarkerTo(marker: Marker?, finalPosition: LatLng, duration: Int, latLngInterpolator: LatLngInterpolator) {
+    fun animateMarkerTo(mapMarker: MapMarker, finalPosition: LatLng, duration: Int, latLngInterpolator: LatLngInterpolator) {
         val typeEvaluator = TypeEvaluator { fraction: Float, a: LatLng?, b: LatLng? -> latLngInterpolator.interpolate(fraction, a!!, b!!) }
         val property = android.util.Property.of(Marker::class.java, LatLng::class.java, "position")
-        val animator = ObjectAnimator.ofObject(marker, property, typeEvaluator, finalPosition)
+        mapMarker.animator = ObjectAnimator.ofObject(mapMarker.marker, property, typeEvaluator, finalPosition)
+        val animator = mapMarker.animator!!
         animator.duration = duration.toLong()
         animator.start()
     }

@@ -1,5 +1,6 @@
 package com.eclipsesource.tabris.maps
 
+import android.animation.ObjectAnimator
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
@@ -42,5 +43,7 @@ class MapMarker {
     }
 
   var mapId: String? = null
+
+  var animator: ObjectAnimator? = null
 
 }
