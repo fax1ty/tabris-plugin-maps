@@ -1,6 +1,6 @@
 var Marker = tabris.NativeObject.extend('com.eclipsesource.maps.Marker', tabris.Widget);
 
-Marker.prototype._listen = function(name, listening) {
+Marker.prototype._listen = function (name, listening) {
   if (name === 'tap') {
     this._nativeListen(name, listening);
   } else {
@@ -8,11 +8,17 @@ Marker.prototype._listen = function(name, listening) {
   }
 };
 
-Marker.prototype.dispose = function() {
+Marker.prototype.dispose = function () {
   if (this._map) {
     this._map.removeMarker(this);
   }
   this._dispose();
+};
+
+Marker.prototype.moveTo = function (values) {
+  if (!values.to) throw new Error(value + ' is not an array');
+  if (values.animate && !values.duration) throw new Error(value + ' is not an integer');
+  this._nativeCall('moveTo', values);
 };
 
 tabris.NativeObject.defineProperties(Marker.prototype, {
@@ -27,7 +33,7 @@ tabris.NativeObject.defineProperties(Marker.prototype, {
     },
     nocache: true
   },
-  image: {type: 'ImageValue', default: null}
+  image: { type: 'ImageValue', default: null }
 });
 
 module.exports = Marker;

@@ -2,9 +2,10 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 dependencies {
-    implementation 'com.eclipsesource.tabris.android:tabris:3.2.0'
+    implementation 'com.eclipsesource.tabris.android:tabris:3.2.1'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.eclipsesource.j2v8:j2v8_win32_x86_64:4.6.0'
 }
 
 android {
@@ -23,6 +24,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
     sourceSets {
