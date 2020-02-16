@@ -28,10 +28,18 @@ class MarkerHandler(private val scope: ActivityScope) : ObjectHandler<MapMarker>
         super.listen(id, mapMarker, event, listen)
         when (event) {
             "move" -> {
-                if (listen) mapMarker.animator?.addUpdateListener { scope.remoteObject(mapMarker)?.notify("move", "position", mapMarker.marker?.position) }
-                else mapMarker.animator?.removeAllUpdateListeners()
+                if (listen) attachOnMoveListener(mapMarker)
+                else removeOnMoveListener(mapMarker)
             }
         }
+    }
+
+    private fun attachOnMoveListener(mapMarker: MapMarker) {
+        mapMarker.animator?.addUpdateListener(MarkerMoveListener(mapMarker, scope))
+    }
+
+    private fun removeOnMoveListener(mapMarker: MapMarker) {
+        mapMarker.animator?.removeAllListeners()
     }
 
     override fun call(mapMarker: MapMarker, method: String, properties: V8Object) = when (method) {

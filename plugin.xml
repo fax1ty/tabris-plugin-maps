@@ -90,6 +90,8 @@
                  target-dir="src/com/eclipsesource/tabris/maps" />
     <source-file src="src/android/com/eclipsesource/tabris/maps/LatLngInterpolator.kt"
                  target-dir="src/com/eclipsesource/tabris/maps" />
+    <source-file src="src/android/com/eclipsesource/tabris/maps/MarkerMoveListener.kt"
+                 target-dir="src/com/eclipsesource/tabris/maps" />
   </platform>
 
   <platform name="ios">
