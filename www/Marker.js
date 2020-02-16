@@ -1,15 +1,18 @@
 var Marker = tabris.NativeObject.extend('com.eclipsesource.maps.Marker', tabris.Widget);
 
+var EVENT_TYPES = ['tap', 'move'];
+
 Marker.prototype._listen = function (name, listening) {
-  if (name === 'tap') {
-    this._nativeListen(name, listening);
-  }
-  else if (name === 'move') {
+  if (EVENT_TYPES.indexOf(name) > -1) {
     this._nativeListen(name, listening);
   }
   else {
     tabris.Widget.prototype._listen.call(this, name, listening);
   }
+};
+
+Map.prototype._trigger = function (name, event) {
+  tabris.Widget.prototype._trigger.call(this, name, event);
 };
 
 Marker.prototype.dispose = function () {
