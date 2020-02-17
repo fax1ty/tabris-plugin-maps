@@ -29,6 +29,7 @@ Marker.prototype.moveTo = function (values) {
 };
 
 tabris.NativeObject.defineProperties(Marker.prototype, {
+  alpha: { type: 'number', default: 1 },
   position: {
     type: {
       convert(value) {

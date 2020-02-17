@@ -2,10 +2,10 @@ package com.eclipsesource.tabris.maps
 
 import android.animation.ObjectAnimator
 import android.animation.TypeEvaluator
+import android.util.Log
 import com.eclipsesource.tabris.android.ActivityScope
 import com.eclipsesource.tabris.android.ObjectHandler
 import com.eclipsesource.tabris.android.Property
-import com.eclipsesource.tabris.android.Scope
 import com.eclipsesource.tabris.android.internal.ktx.toList
 import com.eclipsesource.v8.V8Object
 import com.google.android.gms.maps.model.LatLng
@@ -73,6 +73,7 @@ object MarkerAnimation {
         mapMarker.animator = ObjectAnimator.ofObject(mapMarker.marker, property, typeEvaluator, finalPosition)
         val animator = mapMarker.animator!!
         animator.duration = duration.toLong()
+        animator.addUpdateListener { Log.v("fuck", "gg / ${mapMarker.marker?.position?.latitude} ${mapMarker.marker?.position?.longitude}") }
         animator.start()
     }
 }
