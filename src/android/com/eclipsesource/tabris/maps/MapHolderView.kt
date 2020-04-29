@@ -46,7 +46,9 @@ class MapHolderView(private val scope: ActivityScope) : FrameLayout(scope.activi
     with(googleMap) {
       setOnMarkerClickListener(MarkerTapListener(this@MapHolderView, scope))
       val cameraChangeListener = MapCameraChangeListener(this@MapHolderView, scope)
+      val cameraMoveListener = MapCameraMovedListener(this@MapHolderView, scope)
       setOnCameraMoveStartedListener(cameraChangeListener)
+      setOnCameraMoveListener(cameraMoveListener)
       setOnCameraIdleListener(cameraChangeListener)
     }
     scope.remoteObject(this)?.notify("ready")

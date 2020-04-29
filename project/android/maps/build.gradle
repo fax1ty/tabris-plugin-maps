@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 dependencies {
-    implementation 'com.eclipsesource.tabris.android:tabris:3.2.1'
+    implementation 'com.eclipsesource.tabris.android:tabris:3.4.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.eclipsesource.j2v8:j2v8_win32_x86_64:4.6.0'

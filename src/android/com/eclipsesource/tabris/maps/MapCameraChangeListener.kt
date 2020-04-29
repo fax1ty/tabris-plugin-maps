@@ -19,9 +19,6 @@ class MapCameraChangeListener(private val mapHolderView: MapHolderView, private 
   override fun onCameraIdle() {
     mapHolderView.googleMap.cameraPosition?.let {
       notifyChangeCameraEvent(it)
-      when (reason) {
-        REASON_GESTURE, REASON_API_ANIMATION -> notifyCameraMoveEvent(it)
-      }
     }
   }
 
@@ -30,11 +27,4 @@ class MapCameraChangeListener(private val mapHolderView: MapHolderView, private 
         "position" to listOf(cameraPosition.target.latitude, cameraPosition.target.longitude)
     ))
   }
-
-  private fun notifyCameraMoveEvent(cameraPosition: CameraPosition) {
-    scope.remoteObject(mapHolderView)?.notify("cameraMoved", "camera", mapOf(
-        "position" to listOf(cameraPosition.target.latitude, cameraPosition.target.longitude)
-    ))
-  }
-
 }
