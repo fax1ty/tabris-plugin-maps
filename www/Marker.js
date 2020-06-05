@@ -23,8 +23,8 @@ Marker.prototype.dispose = function () {
 };
 
 Marker.prototype.moveTo = function (values) {
-  if (!values.to) throw new Error(value + ' is not an array');
-  if (values.animate && !values.duration) throw new Error(value + ' is not an integer');
+  if (!values.to) throw new Error(values.to + ' is not an array');
+  if (values.animate && !values.duration) throw new Error(values.duration + ' is not an integer');
   this._nativeCall('moveTo', values);
 };
 
